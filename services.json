@@ -1,0 +1,30 @@
+{
+  "deposit": {
+    "types": {
+      "fixed_deposit": {
+        "online": {
+          "link": "https://bank.com/fd-online",
+          "steps": "Login and select Fixed Deposit to begin."
+        },
+        "offline": {
+          "form_link": "https://bank.com/forms/fd-form.pdf",
+          "steps": "Download and print the form. Fill it and visit a branch with ID."
+        },
+        "interest_rate": "6.5%",
+        "tenure": "1 to 5 years"
+      },
+      "recurring_deposit": {
+        "online": {
+          "link": "https://bank.com/rd-online",
+          "steps": "Login and select Recurring Deposit to start."
+        },
+        "offline": {
+          "form_link": "https://bank.com/forms/rd-form.pdf",
+          "steps": "Download and print the form. Visit a branch to submit it."
+        },
+        "interest_rate": "6.25%",
+        "tenure": "1 to 3 years"
+      }
+    }
+  }
+}
