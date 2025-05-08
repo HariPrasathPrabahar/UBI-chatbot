@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank Chatbot</title>
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+</head>
+<body>
+  <h2>Welcome to Our Bank Chatbot</h2>
+  <p>Click the chat icon at the bottom right to start.</p>
+
+  <df-messenger
+    intent="WELCOME"
+    chat-title="BankBot"
+    agent-id="0ace3560-9351-4af9-9363-0f235591708d"
+    language-code="en"
+  ></df-messenger>
+</body>
+</html>
