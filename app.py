@@ -1,66 +1,108 @@
-# Inside webhook() — Add this block after 'account_type' logic
+from flask import Flask, request, jsonify
+import json
 
-    elif "payment" in query:
+app = Flask(__name__)
+
+# Load service data from file
+with open("services.json") as f:
+    services = json.load(f)
+
+@app.route("/webhook", methods=["POST"])
+def webhook():
+    req = request.get_json()
+    query = req['queryResult']['queryText'].lower()
+    output_contexts = req['queryResult'].get('outputContexts', [])
+
+    # Default values
+    deposit_type = None
+    account_type = None
+    payment_type = None
+    forex_type = None
+    response = "I'm not sure how to help with that yet."
+
+    # Extract parameters if present
+    for ctx in output_contexts:
+        params = ctx.get("parameters", {})
+        deposit_type = params.get("deposit_type", deposit_type)
+        account_type = params.get("account_type", account_type)
+        payment_type = params.get("payment_type", payment_type)
+        forex_type = params.get("forex_type", forex_type)
+
+    # Handle deposits
+    if "deposit" in query and not deposit_type:
         response = (
-            "We offer the following payment options:\n"
-            "💳 NEFT - Batch-based transfer, credited within 2 hrs.\n"
-            "⚡ RTGS - Real-time transfer for ₹2 lakh and above.\n"
-            "🔁 IMPS - Instant 24x7 transfer.\n"
-            "Please tell me which one you're interested in."
+            "We offer the following types of deposits:\n"
+            "1️⃣ Fixed Deposit\n"
+            "2️⃣ Recurring Deposit\n\n"
+            "Please type which one you're interested in."
         )
         return jsonify({
             "fulfillmentText": response,
             "outputContexts": [{
-                "name": f"{req['session']}/contexts/awaiting_payment_type",
+                "name": f"{req['session']}/contexts/awaiting_deposit_type",
                 "lifespanCount": 5
             }]
         })
 
-    elif "forex" in query:
+    if deposit_type:
+        data = services["deposit"]["types"].get(deposit_type.replace(" ", "_"))
+        if data:
+            response = (
+                f"Here are the details for {deposit_type.title()} Deposit:\n\n"
+                f"💻 Online: {data['online']['link']}\nSteps: {data['online']['steps']}\n\n"
+                f"📝 Offline: {data['offline']['form_link']}\nSteps: {data['offline']['steps']}\n\n"
+                f"📊 Interest & Tenure Info: {data['info_link']}"
+            )
+
+    # Handle accounts
+    elif "account" in query and not account_type:
         response = (
-            "Our Forex services include:\n"
-            "🌍 Inward/Outward Remittance\n"
-            "📄 Bill Discounting\n"
-            "📈 Forward Contracts\n"
-            "💱 Currency Conversion\n"
-            "Which one do you want help with?"
+            "You can open the following types of accounts:\n"
+            "1️⃣ Savings Account\n"
+            "2️⃣ Current Account\n\n"
+            "Which one are you interested in?"
         )
         return jsonify({
             "fulfillmentText": response,
             "outputContexts": [{
-                "name": f"{req['session']}/contexts/awaiting_forex_type",
+                "name": f"{req['session']}/contexts/awaiting_account_type",
                 "lifespanCount": 5
             }]
         })
 
-    elif "payment_type" in req["queryResult"]["parameters"]:
-        payment_type = req["queryResult"]["parameters"]["payment_type"].lower().replace(" ", "_")
-        payment_data = services["payment"]["types"].get(payment_type)
-        if payment_data:
+    elif account_type:
+        data = services["account"]["types"].get(account_type.replace(" ", "_"))
+        if data:
             response = (
-                f"{payment_type.upper()}:\n"
-                f"ℹ️ {payment_data['description']}\n"
-                f"💰 Limits: {payment_data['limits']}\n\n"
-                f"💻 Online:\n"
-                f"🔗 {payment_data['online']['link']}\n"
-                f"🧾 {payment_data['online']['steps']}\n\n"
-                f"🏦 Offline:\n"
-                f"{payment_data['offline']['steps']}"
+                f"Here is how to open a {account_type.title()} Account:\n\n"
+                f"💻 Online: {data['online']['link']}\nSteps: {data['online']['steps']}\n\n"
+                f"📝 Offline: {data['offline']['form_link']}\nSteps: {data['offline']['steps']}"
             )
-        else:
-            response = f"Sorry, I couldn’t find info on '{payment_type}'."
 
-    elif "forex_type" in req["queryResult"]["parameters"]:
-        forex_type = req["queryResult"]["parameters"]["forex_type"].lower().replace(" ", "_")
-        forex_data = services["forex"]["types"].get(forex_type)
-        if forex_data:
+    # Handle payments
+    elif payment_type:
+        data = services["payment"].get(payment_type.upper())
+        if data:
             response = (
-                f"{forex_type.replace('_', ' ').title()}:\n\n"
-                f"💻 Online:\n"
-                f"🔗 {forex_data['online']['link']}\n"
-                f"🧾 {forex_data['online']['steps']}\n\n"
-                f"🏦 Offline:\n"
-                f"{forex_data['offline']['steps']}"
+                f"📌 {payment_type.upper()} Info:\n"
+                f"➡️ Limit & Timing: {data['details']}\n\n"
+                f"💻 Online: {data['online']['link']}\n"
+                f"📝 Offline: {data['offline']['steps']}"
             )
-        else:
-            response = f"Sorry, I couldn’t find info on '{forex_type}'."
+
+    # Handle forex
+    elif forex_type:
+        data = services["forex"].get(forex_type.lower())
+        if data:
+            response = (
+                f"🌍 {forex_type.title()} Info:\n\n"
+                f"💻 Online: {data['online']['link']}\n"
+                f"📝 Offline: {data['offline']['steps']}"
+            )
+
+    return jsonify({
+        "fulfillmentText": response
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)

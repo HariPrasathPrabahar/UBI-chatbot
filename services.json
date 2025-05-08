@@ -1,87 +1,122 @@
 {
-  "payment": {
+  "deposit": {
     "types": {
-      "neft": {
-        "description": "NEFT allows fund transfers in batches. Usually credited within 2 hours during bank working hours.",
-        "limits": "No minimum, up to ₹10 lakh per transaction.",
+      "fixed_deposit": {
         "online": {
           "link": "https://www.unionbankonline.co.in/",
-          "steps": "Login and select NEFT under fund transfer options."
+          "steps": "Login and select Fixed Deposit to begin."
         },
         "offline": {
-          "steps": "Fill out the NEFT form and submit it at any branch."
+          "form_link": "https://bank.com/forms/fd-form.pdf",
+          "steps": "Download and fill the form. Submit it at the nearest branch."
+        },
+        "info_link": "https://bank.com/deposit-info"
+      },
+      "recurring_deposit": {
+        "online": {
+          "link": "https://www.unionbankonline.co.in/",
+          "steps": "Login and select Recurring Deposit to start."
+        },
+        "offline": {
+          "form_link": "https://bank.com/forms/rd-form.pdf",
+          "steps": "Download and submit the form at your branch."
+        },
+        "info_link": "https://bank.com/deposit-info"
+      }
+    }
+  },
+  "account": {
+    "types": {
+      "savings": {
+        "online": {
+          "link": "https://www.unionbankonline.co.in/",
+          "steps": "Login and select 'Open Savings Account'."
+        },
+        "offline": {
+          "form_link": "https://bank.com/forms/savings-form.pdf",
+          "steps": "Download the form and submit at the branch with ID proof."
         }
       },
-      "rtgs": {
-        "description": "RTGS is for real-time fund transfers. Best for amounts over ₹2 lakh.",
-        "limits": "Minimum ₹2 lakh, no maximum.",
+      "current": {
         "online": {
           "link": "https://www.unionbankonline.co.in/",
-          "steps": "Login and choose RTGS under fund transfer services."
+          "steps": "Login and choose 'Open Current Account'."
         },
         "offline": {
-          "steps": "Visit a branch and fill out the RTGS form for processing."
-        }
-      },
-      "imps": {
-        "description": "IMPS is instant, available 24x7, including holidays.",
-        "limits": "Up to ₹5 lakh per transaction.",
-        "online": {
-          "link": "https://www.unionbankonline.co.in/",
-          "steps": "Login and select IMPS under fund transfer."
-        },
-        "offline": {
-          "steps": "Limited branches support IMPS offline — visit and inquire."
+          "form_link": "https://bank.com/forms/current-form.pdf",
+          "steps": "Fill the form and visit the nearest branch."
         }
       }
     }
   },
+  "payment": {
+    "NEFT": {
+      "details": "Settles in batches. Limit ₹10 lakh.",
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
+      },
+      "offline": {
+        "steps": "Visit branch and fill NEFT form."
+      }
+    },
+    "RTGS": {
+      "details": "Immediate settlement. Min ₹2 lakh.",
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
+      },
+      "offline": {
+        "steps": "Visit branch and submit RTGS request."
+      }
+    },
+    "IMPS": {
+      "details": "Instant 24x7 transfers. Limit ₹5 lakh.",
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
+      },
+      "offline": {
+        "steps": "Visit branch to use IMPS facility."
+      }
+    }
+  },
   "forex": {
-    "types": {
-      "inward_remittance": {
-        "online": {
-          "link": "https://www.unionbankonline.co.in/",
-          "steps": "Login and navigate to Forex > Inward Remittance."
-        },
-        "offline": {
-          "steps": "Visit a branch and fill in the remittance form."
-        }
+    "inward_remittance": {
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
       },
-      "outward_remittance": {
-        "online": {
-          "link": "https://www.unionbankonline.co.in/",
-          "steps": "Login and go to Forex > Outward Remittance."
-        },
-        "offline": {
-          "steps": "Go to a branch with identity and purpose documents."
-        }
+      "offline": {
+        "steps": "Visit branch with details of remitter and amount."
+      }
+    },
+    "outward_remittance": {
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
       },
-      "bill_discounting": {
-        "online": {
-          "link": "https://www.unionbankonline.co.in/",
-          "steps": "Upload invoice through trade portal after login."
-        },
-        "offline": {
-          "steps": "Submit physical bills at branch for verification."
-        }
+      "offline": {
+        "steps": "Submit remittance form with necessary documents at branch."
+      }
+    },
+    "bill_discounting": {
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
       },
-      "forwards": {
-        "online": {
-          "link": "https://www.unionbankonline.co.in/",
-          "steps": "Login and request forex forward contract online."
-        },
-        "offline": {
-          "steps": "Speak to branch Forex officer to initiate the process."
-        }
+      "offline": {
+        "steps": "Submit bills for discounting at forex branch."
+      }
+    },
+    "forwards": {
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
       },
-      "currency_conversion": {
-        "online": {
-          "link": "https://www.unionbankonline.co.in/",
-          "steps": "Use Forex > Currency Converter after login."
-        },
-        "offline": {
-          "steps": "Visit branch to request currency exchange."
-        }
+      "offline": {
+        "steps": "Visit forex desk to request forward contract."
+      }
+    },
+    "currency_conversion": {
+      "online": {
+        "link": "https://www.unionbankonline.co.in/"
+      },
+      "offline": {
+        "steps": "Approach the forex counter for rates and service."
       }
     }
   }
